@@ -45,19 +45,27 @@ class JogoDamas:
 # Criar o jogo
 damas = JogoDamas()
 
-# Predefinir movimentos (substituir a entrada interativa)
-movimentos = [
-    (2, 1, 3, 2),
-    (5, 0, 4, 1),
-    (2, 3, 3, 4),
-    (5, 2, 4, 3),
-]
-
-# Loop principal
-for movimento in movimentos:
-    linha_origem, coluna_origem, linha_destino, coluna_destino = movimento
+# Loop principal de interação
+while True:
     damas.imprimir_tabuleiro()
-    print(f"Movendo de ({linha_origem}, {coluna_origem}) para ({linha_destino}, {coluna_destino})")
-    damas.mover_peca(linha_origem, coluna_origem, linha_destino, coluna_destino)
+    print("Faça seu movimento:")
+    
+    try:
+        linha_origem = int(input("Linha da peça (0-7): "))
+        coluna_origem = int(input("Coluna da peça (0-7): "))
+        linha_destino = int(input("Linha de destino (0-7): "))
+        coluna_destino = int(input("Coluna de destino (0-7): "))
+        
+        damas.mover_peca(linha_origem, coluna_origem, linha_destino, coluna_destino)
+    except (ValueError, IndexError):
+        print("Entrada inválida. Tente novamente.")
+        continue
+    
+    if all(c != 'P' for row in damas.tabuleiro for c in row):
+        print("As peças pretas não têm mais movimentos!")
+        break
+    elif all(c != 'B' for row in damas.tabuleiro for c in row):
+        print("As peças brancas não têm mais movimentos!")
+        break
 
-print("Jogo Finalizado.")
+print("Fim de jogo.")
